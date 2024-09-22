@@ -9,7 +9,6 @@ class SearchModel {
   final String currency;
   final String matchScore;
 
-  // Constructor
   SearchModel({
     required this.symbol,
     required this.name,
@@ -22,7 +21,6 @@ class SearchModel {
     required this.matchScore,
   });
 
-  // Factory method to create an instance from JSON
   factory SearchModel.fromJson(Map<String, dynamic> json) {
     return SearchModel(
       symbol: json['1. symbol'],

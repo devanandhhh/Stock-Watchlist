@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:stock_watchlist/core/constant.dart';
 import 'package:stock_watchlist/data/model/search_model.dart';
 
 late Database _db;
@@ -29,7 +31,6 @@ Future<void> initializeDatabase() async {
   );
 }
 
-
 // Add stock to the database
 Future<void> addStock(SearchModel stock) async {
   await _db.rawInsert(
@@ -56,21 +57,21 @@ Future<void> deleteStock(String symbol) async {
   await _db.rawDelete('DELETE FROM stocks WHERE symbol = ?', [symbol]);
 }
 
+// Future<List<Map<String, String>>> getCompanyNamesAndMatchScores() async {
+//   final List<Map<String, dynamic>> maps = await _db.rawQuery('SELECT name, matchScore FROM stocks');
 
-Future<List<Map<String, String>>> getCompanyNamesAndMatchScores() async {
-  final List<Map<String, dynamic>> maps = await _db.rawQuery('SELECT name, matchScore FROM stocks');
-
-  // Convert List<Map<String, dynamic>> to List<Map<String, String>>
-  return List.generate(maps.length, (i) {
-    return {
-      'name': maps[i]['name'],
-      'matchScore': maps[i]['matchScore'],
-    };
-  });
-}
+//   // Convert List<Map<String, dynamic>> to List<Map<String, String>>
+//   return List.generate(maps.length, (i) {
+//     return {
+//       'name': maps[i]['name'],
+//       'matchScore': maps[i]['matchScore'],
+//     };
+//   });
+// }
 
 Future<List<SearchModel>> getAllStocks() async {
-  final List<Map<String, dynamic>> maps = await _db.rawQuery('SELECT * FROM stocks');
+  final List<Map<String, dynamic>> maps =
+      await _db.rawQuery('SELECT * FROM stocks');
 
   // Convert List<Map<String, dynamic>> to List<SearchModel>
   return List.generate(maps.length, (i) {
@@ -86,4 +87,34 @@ Future<List<SearchModel>> getAllStocks() async {
       matchScore: maps[i]['matchScore'],
     );
   });
+}
+
+Future<void> handleAddStock(BuildContext context, SearchModel stock) async {
+  final existingStock = await _db.query(
+    'stocks',
+    where: 'symbol = ?',
+    whereArgs: [stock.symbol],
+  );
+
+  if (existingStock.isNotEmpty) {
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Stock ${stock.name} is already in your watchlist!'),
+        duration: const Duration(seconds: 2),
+        backgroundColor: Colors.red[200],
+      ),
+    );
+  } else {
+    await addStock(stock);
+
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Stock ${stock.name} added successfully!'),
+        duration: const Duration(seconds: 2),
+        backgroundColor:green200
+      ),
+    );
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stock_watchlist/core/widgets/widgets.dart';
-import 'package:stock_watchlist/pages/homePage/home_page.dart';
-import 'package:stock_watchlist/pages/watchListPage/watchlist_page.dart';
+import 'package:stock_watchlist/core/widgets.dart';
+import 'package:stock_watchlist/presentation/pages/homePage/home_page.dart';
+import 'package:stock_watchlist/presentation/pages/watchListPage/watchlist_page.dart';
 
 class BottomNavigationPage extends StatefulWidget {
   const BottomNavigationPage({super.key});
@@ -12,7 +12,7 @@ class BottomNavigationPage extends StatefulWidget {
 
 class _BottomNavigationPageState extends State<BottomNavigationPage> {
   int currentIndex = 0;
-  final pages = [ HomePage(),const WatchlistPage()];
+  final pages = [  const HomePage(), const WatchlistPage()];
 
   @override
   Widget build(BuildContext context) {
