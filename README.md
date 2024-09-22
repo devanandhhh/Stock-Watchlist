@@ -1,1 +1,2 @@
+## Stock Watchlist
 Stock Watchlist is a Flutter application that enables users to search for stocks and save them to a local watchlist. The app includes a search bar for finding stock data, which can be stored in a local SQLite database. Users can view their saved stocks on a dedicated page and have the option to delete them from the watchlist. Built with Flutter and sqflite, the app provides an efficient way to keep track of stocks using local storage.
